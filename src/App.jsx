@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { addProject, removeProject } from "./redux/TaskSlice";
+import { addProject } from "./redux/TaskSlice";
 import { useDispatch, useSelector } from "react-redux";
-
+import Projects from "./Projects";
 function App() {
   let [name, setName] = useState("");
   let data = useSelector((state) => state.TaskSlice);
@@ -24,22 +24,7 @@ function App() {
         />
         <button type="submit">submit</button>
       </form>
-      <div>
-        {keys.map((i) => (
-          <div key={i}>
-            {i}
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                dispatch(removeProject(i));
-                console.log(data);
-              }}
-            >
-              Delete
-            </button>
-          </div>
-        ))}
-      </div>
+      <Projects projects={keys} />
     </>
   );
 }
