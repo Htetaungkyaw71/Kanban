@@ -13,23 +13,20 @@ const Project = ({ project }) => {
   return (
     <>
       <div>
-        <div className="flex items-center">
-          <div className="flex justify-between mt-1">
-            <FaTrash
-              onClick={(e) => {
-                e.preventDefault();
-                dispatch(removeProject(project));
-              }}
-              className="text-lg"
-            />
-            <BiEdit
-              onClick={() => setToggle(!toggle)}
-              className="text-xl ml-2"
-            />
-          </div>
-
-          <h1 className="text-2xl font-bold text-cyan-800 ml-5"> {project}</h1>
+        {/* <div className="flex items-center"> */}
+        <div className="flex justify-between mt-1">
+          <FaTrash
+            onClick={(e) => {
+              e.preventDefault();
+              dispatch(removeProject(project));
+            }}
+            className="text-lg"
+          />
+          <BiEdit onClick={() => setToggle(!toggle)} className="text-xl ml-2" />
         </div>
+        {/* 
+        
+        </div> */}
 
         {toggle ? (
           <>

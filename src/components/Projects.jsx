@@ -46,9 +46,13 @@ const Projects = ({ projects }) => {
           <div className="mb-5 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-4 xl:grid-cols-4">
             <div className="border-2">
               {projects.map((i, index) => (
-                <div key={i} className="mb-10">
+                <div key={i} className="mb-10 flex flex-wrap">
+                  <Project project={i} />
                   <button onClick={() => setProject(index)}>
-                    <Project project={i} />
+                    <h1 className="text-2xl font-bold text-cyan-800 ml-5">
+                      {" "}
+                      {i}
+                    </h1>
                   </button>
                 </div>
               ))}
