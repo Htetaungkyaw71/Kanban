@@ -1,9 +1,7 @@
-import { useDispatch } from "react-redux";
-import { removeTask } from "../redux/TaskSlice";
+import Card from "./Card";
 
 /* eslint-disable react/prop-types */
 const Task = ({ task, project }) => {
-  const dispatch = useDispatch();
   //   const [data, setData] = useState({
   //     id: null,
   //     name: project,
@@ -14,6 +12,9 @@ const Task = ({ task, project }) => {
   if (task.length === 0) {
     return <div>no task</div>;
   }
+  let todo = task.filter((t) => t.status === "todo");
+  let doing = task.filter((t) => t.status === "doing");
+  let done = task.filter((t) => t.status === "done");
 
   //   const handleChange = (e) => {
   //     const value = e.target.value;
@@ -24,48 +25,28 @@ const Task = ({ task, project }) => {
   //     console.log(data);
   //   };
   return (
-    <div>
-      {task.map((t) => (
-        <div key={t.id}>
-          <h1>{t.title}</h1>
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              dispatch(removeTask([project, t]));
-            }}
-          >
-            Delete
-          </button>
-          {/* <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              data.id = task.id;
-              updateTask([project, data]);
-            }}
-          >
-            <input
-              name="title"
-              type="text"
-              placeholder="title"
-              value={data.title}
-              onChange={handleChange}
-            />
-            <input
-              name="description"
-              type="text"
-              placeholder="description"
-              value={data.description}
-              onChange={handleChange}
-            />
-            <select name="status" value={data.status} onChange={handleChange}>
-              <option value="todo">Todo</option>
-              <option value="doing">Doing</option>
-              <option value="done">Done</option>
-            </select>
-            <button type="submit">rename</button>
-          </form> */}
-        </div>
-      ))}
+    <div className="grid grid-cols-3">
+      <div className="border-2">
+        {todo.map((t) => (
+          <div key={t.id}>
+            <Card data={t} project={project} />
+          </div>
+        ))}
+      </div>
+      <div className="border-2">
+        {doing.map((t) => (
+          <div key={t.id}>
+            <Card data={t} project={project} />
+          </div>
+        ))}
+      </div>
+      <div className="border-2">
+        {done.map((t) => (
+          <div key={t.id}>
+            <Card data={t} project={project} />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

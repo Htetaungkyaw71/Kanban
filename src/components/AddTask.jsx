@@ -24,6 +24,9 @@ const AddTask = ({ project }) => {
     } else {
       dispatch(addTask(formdata));
       setError(false);
+      e.target.title.value = "";
+      e.target.description.value = "";
+      e.target.status.value = "todo";
     }
   };
 
