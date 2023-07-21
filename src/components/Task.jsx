@@ -26,23 +26,32 @@ const Task = ({ task, project }) => {
   //   };
   return (
     <div className="grid grid-cols-3">
-      <div className="border-2">
+      <div className="border-2 p-3">
+        <h1 className="text-lg font-bold text-gray-500 ml-3">
+          Todo {todo.length}
+        </h1>
         {todo.map((t) => (
-          <div key={t.id}>
+          <div key={t.id} className="mb-3">
             <Card data={t} project={project} />
           </div>
         ))}
       </div>
-      <div className="border-2">
+      <div className="border-2 p-3">
+        <h1 className="text-lg font-bold text-gray-500 ml-3">
+          Doing {doing.length}
+        </h1>
         {doing.map((t) => (
-          <div key={t.id}>
+          <div key={t.id} className="mb-3">
             <Card data={t} project={project} />
           </div>
         ))}
       </div>
-      <div className="border-2">
+      <div className="border-2 p-3">
+        <h1 className="text-lg font-bold text-gray-500 ml-3">
+          Done {done.length}
+        </h1>
         {done.map((t) => (
-          <div key={t.id}>
+          <div key={t.id} className="mb-3">
             <Card data={t} project={project} />
           </div>
         ))}

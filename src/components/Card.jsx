@@ -5,7 +5,7 @@ import { removeTask } from "../redux/TaskSlice";
 const Card = ({ data, project }) => {
   const dispatch = useDispatch();
   return (
-    <div>
+    <div className="border-2 rounded-lg p-3">
       <h1>{data.title}</h1>
       <button
         onClick={(e) => {
