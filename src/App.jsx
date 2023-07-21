@@ -1,31 +1,17 @@
-import { useState } from "react";
-import { addProject } from "./redux/TaskSlice";
-import { useDispatch, useSelector } from "react-redux";
-import Projects from "./Projects";
+import { useSelector } from "react-redux";
+import Projects from "./components/Projects";
+
 function App() {
-  let [name, setName] = useState("");
   let data = useSelector((state) => state.TaskSlice);
-  let keys = Object.keys(data);
-  const dispatch = useDispatch();
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(addProject(name));
-  };
   console.log(data);
+  let keys = Object.keys(data);
+
   return (
-    <>
-      <h1 className="text-red-500 text-2xl">Hello world</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="text"
-        />
-        <button type="submit">submit</button>
-      </form>
+    <div className="container mx-auto mt-3">
+      <h1 className="text-3xl font-bold">Kanban</h1>
+
       <Projects projects={keys} />
-    </>
+    </div>
   );
 }
 
