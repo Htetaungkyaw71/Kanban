@@ -83,11 +83,11 @@ const Projects = ({ projects }) => {
                           value={name}
                           onChange={(e) => setName(e.target.value)}
                           placeholder="add project"
-                          className="p-1 mr-3 border-2 border-gray-500 rounded-sm"
+                          className="p-1 mr-3 border-2 border-gray-500 rounded-lg"
                         />
                         <button
                           type="submit"
-                          className="bg-gray-500 text-white p-1 px-2 rounded-sm"
+                          className="bg-gray-500 text-white p-1 px-2 rounded-lg"
                         >
                           submit
                         </button>

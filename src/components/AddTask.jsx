@@ -18,15 +18,21 @@ const AddTask = ({ project }) => {
       id: uuidv4(),
       title: obj.get("title") ?? "",
       description: obj.get("description") ?? "",
+      hour: obj.get("hour") ?? "",
       status: obj.get("status") ?? "",
     };
-    if (formdata.title.length <= 0 || formdata.description.length <= 0) {
+    if (
+      formdata.title.length <= 0 ||
+      formdata.description.length <= 0 ||
+      formdata.hour.length <= 0
+    ) {
       setError(true);
     } else {
       dispatch(addTask([project, formdata]));
       setError(false);
       e.target.title.value = "";
       e.target.description.value = "";
+      e.target.hour.value = "";
       e.target.status.value = "todo";
     }
   };
@@ -62,23 +68,34 @@ const AddTask = ({ project }) => {
                     name="title"
                     type="text"
                     placeholder="title"
-                    className="block p-1 mr-3 border-2 border-gray-500 rounded-sm mb-3 w-full"
+                    className="block p-1 mr-3 border-2 border-gray-500 rounded-lg mb-3 w-full"
                   />
                   <label className="text-md mb-2 text-gray-500 font-bold">
                     Description
                   </label>
-                  <input
+                  <textarea
                     name="description"
                     type="text"
                     placeholder="description"
-                    className="block p-1 mr-3 border-2 border-gray-500 rounded-sm mb-3 w-full"
+                    className="block p-1 mr-3 border-2 border-gray-500 rounded-lg mb-3 w-full"
+                  ></textarea>
+                  <label className="text-md mb-2 text-gray-500 font-bold">
+                    Hour (please type number only)
+                  </label>
+                  <input
+                    name="hour"
+                    type="number"
+                    step="0.01"
+                    min={0}
+                    placeholder="hour (eg 30min = 0.5)"
+                    className="block p-1 mr-3 border-2 border-gray-500 rounded-lg mb-3 w-full"
                   />
                   <label className="text-md mb-2 text-gray-500 font-bold">
                     Status
                   </label>
                   <select
                     name="status"
-                    className="block p-1 mr-3 border-2 border-gray-500 rounded-sm mb-3 w-full"
+                    className="block p-1 mr-3 border-2 border-gray-500 rounded-lg mb-3 w-full"
                   >
                     <option value="todo">Todo</option>
                     <option value="doing">Doing</option>
@@ -86,9 +103,9 @@ const AddTask = ({ project }) => {
                   </select>
                   <button
                     type="submit"
-                    className="bg-gray-500 text-white p-1 px-2 rounded-sm"
+                    className="bg-gray-500 text-white p-1 px-2 rounded-lg"
                   >
-                    submit
+                    Submit
                   </button>
                 </form>
                 {error ? <div>Invalid Credential</div> : null}

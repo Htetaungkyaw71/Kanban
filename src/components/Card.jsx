@@ -14,6 +14,7 @@ const Card = ({ data, project }) => {
     id: data.id,
     title: data.title,
     description: data.description,
+    hour: data.hour,
     status: data.status,
   });
   const handleChange = (e) => {
@@ -27,8 +28,10 @@ const Card = ({ data, project }) => {
   return (
     <>
       <button onClick={() => setCardToogle(!cardToogle)} className="w-60">
-        <div className="border-2 rounded-lg p-3 text-left">
-          <h1>{data.title}</h1>
+        <div className="border-2 rounded-lg p-3 text-left shadow-lg">
+          <h1>
+            {data.title} ({data.hour}hr)
+          </h1>
 
           <p>{data.description}</p>
         </div>
@@ -82,7 +85,7 @@ const Card = ({ data, project }) => {
               <div className="modal-content">
                 <RxCross1
                   onClick={() => setEdit(false)}
-                  className="cursor-pointer"
+                  className="cursor-pointer ml-auto"
                 />
                 <form
                   onSubmit={(e) => {
@@ -107,18 +110,31 @@ const Card = ({ data, project }) => {
                     placeholder="title"
                     value={updateData.title}
                     onChange={handleChange}
-                    className="block p-1 mr-3 border-2 border-gray-500 rounded-sm mb-3 w-full"
+                    className="block p-1 mr-3 border-2 border-gray-500 mb-3 w-full rounded-lg"
                   />
                   <label className="text-md mb-2 text-gray-500 font-bold">
                     Description
                   </label>
-                  <input
+                  <textarea
                     name="description"
                     type="text"
                     placeholder="description"
                     value={updateData.description}
                     onChange={handleChange}
-                    className="block p-1 mr-3 border-2 border-gray-500 rounded-sm mb-3 w-full"
+                    className="block p-1 mr-3 border-2 border-gray-500 rounded-lg mb-3 w-full"
+                  ></textarea>
+                  <label className="text-md mb-2 text-gray-500 font-bold">
+                    Hour (please type number only)
+                  </label>
+                  <input
+                    name="hour"
+                    type="number"
+                    step="0.01"
+                    min={0}
+                    value={updateData.hour}
+                    onChange={handleChange}
+                    placeholder="hour (eg 30min = 0.5)"
+                    className="block p-1 mr-3 border-2 border-gray-500 rounded-lg mb-3 w-full"
                   />
                   <label className="text-md mb-2 text-gray-500 font-bold">
                     Status
@@ -127,7 +143,7 @@ const Card = ({ data, project }) => {
                     name="status"
                     value={updateData.status}
                     onChange={handleChange}
-                    className="block p-1 mr-3 border-2 border-gray-500 rounded-sm mb-3 w-full"
+                    className="block p-1 mr-3 border-2 border-gray-500 rounded-lg mb-3 w-full"
                   >
                     <option value="todo">Todo</option>
                     <option value="doing">Doing</option>
@@ -135,9 +151,9 @@ const Card = ({ data, project }) => {
                   </select>
                   <button
                     type="submit"
-                    className="bg-gray-500 text-white p-1 px-2 rounded-sm"
+                    className="bg-gray-500 text-white p-1 px-2 rounded-lg"
                   >
-                    rename
+                    Rename
                   </button>
                 </form>
                 {error && <div>Invalid Credential</div>}
