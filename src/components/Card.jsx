@@ -69,7 +69,7 @@ const Card = ({ data, project }) => {
                     e.preventDefault();
                     dispatch(removeTask([project, data]));
                   }}
-                  className="bg-red-500 p-3 rounded-lg text-white mt-5"
+                  className="bg-red-500 p-2 rounded-lg text-white mt-5"
                 >
                   Delete
                 </button>
