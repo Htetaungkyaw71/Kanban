@@ -3,7 +3,6 @@ import Projects from "./components/Projects";
 
 function App() {
   let data = useSelector((state) => state.TaskSlice);
-  console.log(data);
   let keys = Object.keys(data);
 
   return (

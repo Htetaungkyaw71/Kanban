@@ -17,7 +17,6 @@ const AddTask = ({ project }) => {
     let obj = new FormData(e.target);
     let formdata = {
       id: uuidv4(),
-      name: project,
       title: obj.get("title") ?? "",
       description: obj.get("description") ?? "",
       status: obj.get("status") ?? "",
@@ -25,7 +24,7 @@ const AddTask = ({ project }) => {
     if (formdata.title.length <= 0 || formdata.description.length <= 0) {
       setError(true);
     } else {
-      dispatch(addTask(formdata));
+      dispatch(addTask([project, formdata]));
       setError(false);
       e.target.title.value = "";
       e.target.description.value = "";

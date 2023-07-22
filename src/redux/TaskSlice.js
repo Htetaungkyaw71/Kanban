@@ -17,17 +17,24 @@ const taskSlice = createSlice({
       }
     },
     addTask: (state, action) => {
-      const { id, name, title, description, status } = action.payload;
-      state[name] = [{ id, name, title, description, status }, ...state[name]];
+      state[action.payload[0]] = [
+        action.payload[1],
+        ...state[action.payload[0]],
+      ];
     },
     removeTask: (state, action) => {
       state[action.payload[0]] = state[action.payload[0]].filter(
         (data) => data.id !== action.payload[1].id,
       );
     },
-    updateTask: (action) => {
-      removeTask([action.payload[0], action.payload[1]]);
-      addTask(action.payload[1]);
+    updateTask: (state, action) => {
+      state[action.payload[0]] = state[action.payload[0]].filter(
+        (data) => data.id !== action.payload[1].id,
+      );
+      state[action.payload[0]] = [
+        action.payload[1],
+        ...state[action.payload[0]],
+      ];
     },
   },
 });

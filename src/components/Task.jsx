@@ -2,13 +2,6 @@ import Card from "./Card";
 
 /* eslint-disable react/prop-types */
 const Task = ({ task, project }) => {
-  //   const [data, setData] = useState({
-  //     id: null,
-  //     name: project,
-  //     title: "",
-  //     description: "",
-  //     status: "",
-  //   });
   if (task.length === 0) {
     return (
       <div className="text-center pt-40 text-2xl font-bold text-gray-500">
@@ -20,14 +13,6 @@ const Task = ({ task, project }) => {
   let doing = task.filter((t) => t.status === "doing");
   let done = task.filter((t) => t.status === "done");
 
-  //   const handleChange = (e) => {
-  //     const value = e.target.value;
-  //     setData({
-  //       ...data,
-  //       [e.target.name]: value,
-  //     });
-  //     console.log(data);
-  //   };
   return (
     <div className="grid grid-cols-3">
       <div className="p-3">

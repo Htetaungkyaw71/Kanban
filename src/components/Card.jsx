@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useDispatch } from "react-redux";
-import { removeTask } from "../redux/TaskSlice";
+import { removeTask, updateTask } from "../redux/TaskSlice";
 import { RxCross1 } from "react-icons/rx";
 import { useState } from "react";
 import Modal from "./Modal";
@@ -9,7 +9,19 @@ import { BiEdit } from "react-icons/bi";
 const Card = ({ data, project }) => {
   const [cardToogle, setCardToogle] = useState(false);
   const [edit, setEdit] = useState(false);
-
+  const [updateData, setUpdateData] = useState({
+    id: data.id,
+    title: data.title,
+    description: data.description,
+    status: data.status,
+  });
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setUpdateData({
+      ...updateData,
+      [e.target.name]: value,
+    });
+  };
   const dispatch = useDispatch();
   return (
     <>
@@ -35,9 +47,6 @@ const Card = ({ data, project }) => {
                   >
                     Edit
                   </BiEdit>
-                  {/* <h1 className="mb-3 text-xl font-bold text-gray-500">
-                    Detail Task
-                  </h1> */}
                   <RxCross1
                     onClick={() => setCardToogle(false)}
                     className="cursor-pointer"
@@ -74,7 +83,55 @@ const Card = ({ data, project }) => {
                   onClick={() => setEdit(false)}
                   className="cursor-pointer"
                 />
-                Hello world
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    console.log(updateData);
+                    dispatch(updateTask([project, updateData]));
+                  }}
+                >
+                  <label className="text-md mb-2 text-gray-500 font-bold">
+                    Title
+                  </label>
+                  <input
+                    name="title"
+                    type="text"
+                    placeholder="title"
+                    value={updateData.title}
+                    onChange={handleChange}
+                    className="block p-1 mr-3 border-2 border-gray-500 rounded-sm mb-3 w-full"
+                  />
+                  <label className="text-md mb-2 text-gray-500 font-bold">
+                    Description
+                  </label>
+                  <input
+                    name="description"
+                    type="text"
+                    placeholder="description"
+                    value={updateData.description}
+                    onChange={handleChange}
+                    className="block p-1 mr-3 border-2 border-gray-500 rounded-sm mb-3 w-full"
+                  />
+                  <label className="text-md mb-2 text-gray-500 font-bold">
+                    Status
+                  </label>
+                  <select
+                    name="status"
+                    value={updateData.status}
+                    onChange={handleChange}
+                    className="block p-1 mr-3 border-2 border-gray-500 rounded-sm mb-3 w-full"
+                  >
+                    <option value="todo">Todo</option>
+                    <option value="doing">Doing</option>
+                    <option value="done">Done</option>
+                  </select>
+                  <button
+                    type="submit"
+                    className="bg-gray-500 text-white p-1 px-2 rounded-sm"
+                  >
+                    rename
+                  </button>
+                </form>
               </div>
             </div>
           </Modal>
@@ -85,34 +142,3 @@ const Card = ({ data, project }) => {
 };
 
 export default Card;
-
-{
-  /* <form
-    onSubmit={(e) => {
-      e.preventDefault();
-      data.id = task.id;
-      updateTask([project, data]);
-    }}
-  >
-    <input
-      name="title"
-      type="text"
-      placeholder="title"
-      value={data.title}
-      onChange={handleChange}
-    />
-    <input
-      name="description"
-      type="text"
-      placeholder="description"
-      value={data.description}
-      onChange={handleChange}
-    />
-    <select name="status" value={data.status} onChange={handleChange}>
-      <option value="todo">Todo</option>
-      <option value="doing">Doing</option>
-      <option value="done">Done</option>
-    </select>
-    <button type="submit">rename</button>
-  </form> */
-}
