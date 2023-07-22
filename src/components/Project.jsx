@@ -8,8 +8,9 @@ import Modal from "./Modal";
 import { RxCross1 } from "react-icons/rx";
 
 /* eslint-disable react/prop-types */
-const Project = ({ project }) => {
+const Project = ({ project, changeProjectHover }) => {
   const [toggle, setToggle] = useState(false);
+  const [error, setError] = useState(false);
   const [rename, setRename] = useState(project);
   const dispatch = useDispatch();
   return (
@@ -20,6 +21,7 @@ const Project = ({ project }) => {
             onClick={(e) => {
               e.preventDefault();
               dispatch(removeProject(project));
+              changeProjectHover(0);
             }}
             className="text-lg cursor-pointer"
           />
@@ -46,7 +48,13 @@ const Project = ({ project }) => {
                   <form
                     onSubmit={(e) => {
                       e.preventDefault();
-                      dispatch(renameProject([project, rename]));
+                      if (rename.length <= 0) {
+                        setError(true);
+                      } else {
+                        dispatch(renameProject([project, rename]));
+                        setToggle(false);
+                        setError(false);
+                      }
                     }}
                     className="mt-2"
                   >
@@ -63,6 +71,7 @@ const Project = ({ project }) => {
                       rename
                     </button>
                   </form>
+                  {error && <div>Invalid Credential</div>}
                 </div>
               </div>
             </Modal>

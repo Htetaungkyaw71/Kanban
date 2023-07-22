@@ -8,6 +8,7 @@ import { BiEdit } from "react-icons/bi";
 
 const Card = ({ data, project }) => {
   const [cardToogle, setCardToogle] = useState(false);
+  const [error, setError] = useState(false);
   const [edit, setEdit] = useState(false);
   const [updateData, setUpdateData] = useState({
     id: data.id,
@@ -86,8 +87,15 @@ const Card = ({ data, project }) => {
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
-                    console.log(updateData);
-                    dispatch(updateTask([project, updateData]));
+                    if (
+                      updateData.title.length <= 0 ||
+                      updateData.description.length <= 0
+                    ) {
+                      setError(true);
+                    } else {
+                      dispatch(updateTask([project, updateData]));
+                      setError(false);
+                    }
                   }}
                 >
                   <label className="text-md mb-2 text-gray-500 font-bold">
@@ -132,6 +140,7 @@ const Card = ({ data, project }) => {
                     rename
                   </button>
                 </form>
+                {error && <div>Invalid Credential</div>}
               </div>
             </div>
           </Modal>

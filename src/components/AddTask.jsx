@@ -7,7 +7,6 @@ import Modal from "./Modal";
 import { RxCross1 } from "react-icons/rx";
 
 const AddTask = ({ project }) => {
-  console.log(project);
   const dispatch = useDispatch();
 
   const [error, setError] = useState(false);

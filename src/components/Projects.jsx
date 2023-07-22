@@ -12,14 +12,21 @@ const Projects = ({ projects }) => {
   let [name, setName] = useState("");
   let data = useSelector((state) => state.TaskSlice);
   let [project, setProject] = useState(0);
+  let [error, setError] = useState(false);
   let [addmodal, setAddmodal] = useState(false);
   let current_task = data[projects[project]] ?? [];
 
   const dispatch = useDispatch();
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addProject(name));
-    setName("");
+    if (name.length <= 0) {
+      setError(true);
+    } else {
+      dispatch(addProject(name));
+      setName("");
+      setError(false);
+      setAddmodal(false);
+    }
   };
 
   return (
@@ -43,7 +50,7 @@ const Projects = ({ projects }) => {
                     project === index && "bg-gray-500 text-white"
                   }  p-4 rounded-r-xl`}
                 >
-                  <Project project={i} />
+                  <Project project={i} changeProjectHover={setProject} />
                   <button onClick={() => setProject(index)}>
                     <h1 className="text-lg font-bold ml-5"> {i}</h1>
                   </button>
@@ -85,6 +92,7 @@ const Projects = ({ projects }) => {
                           submit
                         </button>
                       </form>
+                      {error && <div>Invalid Credential</div>}
                     </div>
                   </div>
                 </Modal>
