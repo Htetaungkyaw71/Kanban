@@ -36,9 +36,14 @@ const Project = ({ project, changeProjectHover }) => {
             <Modal>
               <div id="myModal" className="modal">
                 <div className="modal-content">
-                  <div className="flex justify-between">
-                    <h1 className="mb-3 text-xl font-bold text-gray-500">
-                      Edit Project Name
+                  {error && (
+                    <div className="text-center text-red-500 mb-3">
+                      Invalid Credential
+                    </div>
+                  )}
+                  <div className="flex justify-between items-center mb-3">
+                    <h1 className="text-xl font-bold text-gray-500">
+                      Edit Project
                     </h1>
                     <RxCross1
                       onClick={() => setToggle(false)}
@@ -62,16 +67,16 @@ const Project = ({ project, changeProjectHover }) => {
                       type="text"
                       value={rename}
                       onChange={(e) => setRename(e.target.value)}
-                      className="p-1 mr-3 border-2 border-gray-500 rounded-sm"
+                      placeholder="edit project"
+                      className="p-1 mr-3 mt-2 border-2 border-gray-500 rounded-xl"
                     />
                     <button
                       type="submit"
-                      className="bg-gray-500 text-white p-1 px-2 rounded-sm"
+                      className="bg-blue-500 text-white p-1 px-3 mt-2 rounded-2xl"
                     >
-                      rename
+                      Edit Project
                     </button>
                   </form>
-                  {error && <div>Invalid Credential</div>}
                 </div>
               </div>
             </Modal>

@@ -23,3 +23,19 @@
   width: 30%; /* Could be more or less, depending on screen size */
   border-radius: 20px;
 }
+
+@media screen and (max-width: 968px) {
+  /* Modal Content/Box */
+  .modal-content {
+    margin: 20% auto;
+    width: 50%; /* Could be more or less, depending on screen size */
+  }
+}
+
+@media screen and (max-width: 568px) {
+  /* Modal Content/Box */
+  .modal-content {
+    margin: 40% auto;
+    width: 80%; /* Could be more or less, depending on screen size */
+  }
+}
