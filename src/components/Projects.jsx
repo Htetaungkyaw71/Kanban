@@ -10,7 +10,7 @@ import { RxCross1 } from "react-icons/rx";
 import kanban from "../assets/kanban.png";
 import { IoMdArrowDropdown } from "react-icons/io";
 
-const Projects = ({ projects }) => {
+const Projects = ({ projects, toggleTheme, theme }) => {
   let [name, setName] = useState("");
   let data = useSelector((state) => state.TaskSlice);
   let [project, setProject] = useState(0);
@@ -48,7 +48,7 @@ const Projects = ({ projects }) => {
           <div className="mb-5 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-4 xl:grid-cols-4">
             <div className="border-0 p-3">
               <button
-                className="text-lg font-bold text-gray-500 ml-3 mb-3"
+                className={`text-lg font-bold text-gray-500 ml-3 mb-3`}
                 onClick={() => setHide(!hide)}
               >
                 <span>All Projects </span>({projects.length})
@@ -61,7 +61,7 @@ const Projects = ({ projects }) => {
                       key={i}
                       className={`mb-2 flex flex-wrap items-center ${
                         project === index && "bg-blue-500 text-white"
-                      }  p-4 rounded-r-3xl text-gray-500`}
+                      }  p-4 rounded-r-3xl text-gray-500 `}
                     >
                       <Project project={i} changeProjectHover={setProject} />
                       <button onClick={() => setProject(index)}>
@@ -74,6 +74,13 @@ const Projects = ({ projects }) => {
                     onClick={() => setAddmodal(!addmodal)}
                   >
                     +Create Project
+                  </button>
+
+                  <button
+                    onClick={toggleTheme}
+                    className="font-bold capitalize border-2 p-2 ml-3 rounded-3xl block"
+                  >
+                    {theme === "dark" ? "🌙 dark" : "🔆 light"} mode
                   </button>
                 </div>
               )}
