@@ -6,7 +6,7 @@ import { useState } from "react";
 import Modal from "./Modal";
 import { BiEdit } from "react-icons/bi";
 
-const Card = ({ data, project }) => {
+const Card = ({ data, project, theme }) => {
   const [cardToogle, setCardToogle] = useState(false);
   const [error, setError] = useState(false);
   const [edit, setEdit] = useState(false);
@@ -32,8 +32,16 @@ const Card = ({ data, project }) => {
         onClick={() => setCardToogle(!cardToogle)}
         className="w-64 sm:w-64 md:w-72 lg:w-56 xl:w-64"
       >
-        <div className="border-2 rounded-lg p-3 text-left shadow-lg">
-          <h1 className="text-lg font-semibold text-gray-500">
+        <div
+          className={`border-2 rounded-lg p-3 text-left shadow-lg ${
+            theme === "dark" && "bg-slate-600 border-0"
+          }`}
+        >
+          <h1
+            className={`text-lg font-semibold text-gray-500 ${
+              theme === "dark" && "text-white"
+            }`}
+          >
             <span className="mr-2">{data.priority && data.priority}</span>
             {data.title.substr(0, 14)}
             {data.title.length > 14 && "..."} ({data.hour}hr)

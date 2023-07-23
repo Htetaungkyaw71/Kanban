@@ -126,7 +126,11 @@ const Projects = ({ projects, toggleTheme, theme }) => {
               ) : null}
               {/* Add Project Modal */}
             </div>
-            <Tasks task={current_task} project={projects[project]} />
+            <Tasks
+              task={current_task}
+              project={projects[project]}
+              theme={theme}
+            />
           </div>
         </div>
       </div>

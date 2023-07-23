@@ -1,7 +1,7 @@
 import Card from "./Card";
 
 /* eslint-disable react/prop-types */
-const Task = ({ task, project }) => {
+const Task = ({ task, project, theme }) => {
   if (task.length === 0) {
     return (
       <div className="text-center pt-40 text-2xl font-bold text-gray-500">
@@ -21,7 +21,7 @@ const Task = ({ task, project }) => {
         </h1>
         {todo.map((t) => (
           <div key={t.id} className="mb-3">
-            <Card data={t} project={project} />
+            <Card data={t} project={project} theme={theme} />
           </div>
         ))}
       </div>
@@ -31,7 +31,7 @@ const Task = ({ task, project }) => {
         </h1>
         {doing.map((t) => (
           <div key={t.id} className="mb-3">
-            <Card data={t} project={project} />
+            <Card data={t} project={project} theme={theme} />
           </div>
         ))}
       </div>
