@@ -1,30 +1,41 @@
 import Card from "./Card";
 import { DragDropContext, Draggable } from "react-beautiful-dnd";
 import { StrictModeDroppable as Droppable } from "./helpers/StrictModeDroppable";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { useDispatch } from "react-redux";
+import { updateTask } from "../redux/TaskSlice";
 
 /* eslint-disable react/prop-types */
 const Task = ({ task, project, theme }) => {
+  const dispatch = useDispatch();
   let todo = task.filter((t) => t.status === "todo");
-  // let doing = task.filter((t) => t.status === "doing");
-  // let done = task.filter((t) => t.status === "done");
+  let doing = task.filter((t) => t.status === "doing");
+  let done = task.filter((t) => t.status === "done");
 
+  let todo_id = uuidv4();
+  let doing_id = uuidv4();
+  let done_id = uuidv4();
   let columnsfromBackend = {
-    [uuidv4()]: {
+    [todo_id]: {
       name: "todo",
       items: todo,
     },
-    // [uuidv4()]: {
-    //   name: "doing",
-    //   items: doing,
-    // },
-    // [uuidv4()]: {
-    //   name: "done",
-    //   items: done,
-    // },
+    [doing_id]: {
+      name: "doing",
+      items: doing,
+    },
+    [done_id]: {
+      name: "done",
+      items: done,
+    },
   };
+
   const [columns, setColumns] = useState(columnsfromBackend);
+
+  useEffect(() => {
+    setColumns(columnsfromBackend);
+  }, [task]);
 
   if (task.length === 0) {
     return (
@@ -40,24 +51,41 @@ const Task = ({ task, project, theme }) => {
     }
 
     const { source, destination } = result;
-    const column = columns[source.droppableId];
-    console.log(column);
-    const copyItems = [...column.items];
-    console.log(copyItems);
+    if (source.droppableId !== destination.droppableId) {
+      const sourceColumn = columns[source.droppableId];
+      const destColumn = columns[destination.droppableId];
+      const sourceItems = [...sourceColumn.items];
+      const destItems = [...destColumn.items];
+      const [removed] = sourceItems.splice(source.index, 1);
+      destItems.splice(destination.index, 0, removed);
+      console.log(destination.index);
+      let obj = { ...destItems[destination.index], status: destColumn.name };
+      dispatch(updateTask([project, obj]));
+      setColumns({
+        ...columns,
+        [source.droppableId]: {
+          ...sourceColumn,
+          items: sourceItems,
+        },
+        [destination.droppableId]: {
+          ...destColumn,
+          items: destItems,
+        },
+      });
+    } else {
+      const column = columns[source.droppableId];
+      const copyItems = [...column.items];
+      const [removeItem] = copyItems.splice(source.index, 1);
+      copyItems.splice(destination.index, 0, removeItem);
 
-    const [removeItem] = copyItems.splice(source.index, 1);
-
-    copyItems.splice(destination.index, 0, removeItem);
-    console.log(copyItems);
-
-    setColumns({
-      ...columns,
-      [source.droppableId]: {
-        ...column,
-        items: copyItems,
-      },
-    });
-    console.log(columns);
+      setColumns({
+        ...columns,
+        [source.droppableId]: {
+          ...column,
+          items: copyItems,
+        },
+      });
+    }
   };
 
   return (
@@ -71,12 +99,18 @@ const Task = ({ task, project, theme }) => {
               {(provided, snapshot) => (
                 <div
                   className={`p-3 border-2 sm:border-b-0 md:border-b-2 lg:border-b-2 xl:border-b-2 ${
-                    snapshot.isDraggingOver ? "bg-gray-50" : "bg-white"
+                    theme === "light"
+                      ? snapshot.isDraggingOver
+                        ? "bg-gray-50"
+                        : "bg-white"
+                      : snapshot.isDraggingOver
+                      ? "bg-gray-700"
+                      : "dark"
                   }`}
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                 >
-                  <h1 className="text-lg font-bold text-gray-500 ml-3 mb-3">
+                  <h1 className="text-lg font-bold text-gray-500 ml-3 mb-3 capitalize">
                     {column.name} 📋 ({column.items.length})
                   </h1>
                   {column.items.map((data, index) => (
@@ -115,28 +149,3 @@ const Task = ({ task, project, theme }) => {
 };
 
 export default Task;
-// <div key={t.id} className="mb-3">
-//   <Card data={t} project={project} theme={theme} />
-// </div>
-{
-  /* <div className="p-3 border-2  sm:border-y-2 sm:border-x-2 md:border-r-2 md:border-l-0 lg:border-y-2 lg:border-x-0 xl:border-y-2 xl:border-x-0">
-              <h1 className="text-lg font-bold text-gray-500 ml-3 mb-3">
-                Doing 💪 ({doing.length})
-              </h1>
-              {doing.map((t) => (
-                <div key={t.id} className="mb-3">
-                  <Card data={t} project={project} theme={theme} />
-                </div>
-              ))}
-            </div>
-            <div className="p-3 border-2 sm:border-2 sm:border-t-0 md:border-t-0 lg:border-2 xl:border-2">
-              <h1 className="text-lg font-bold text-gray-500 ml-3 mb-3">
-                Done 🎉 ({done.length})
-              </h1>
-              {done.map((t) => (
-                <div key={t.id} className="mb-3">
-                  <Card data={t} project={project} />
-                </div>
-              ))}
-            </div> */
-}

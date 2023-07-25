@@ -26,16 +26,22 @@ const Card = ({ data, project, theme, snapshot }) => {
     });
   };
   const dispatch = useDispatch();
+
   return (
     <>
       <button
-        onClick={() => setCardToogle(!cardToogle)}
         className={`mb-3 w-64 sm:w-64 md:w-72 lg:w-56 xl:w-64`}
+        onClick={() => setCardToogle(!cardToogle)}
       >
         <div
           className={`border-2 rounded-lg p-3 text-left shadow-lg ${
-            (theme === "dark" && "bg-slate-600 border-0",
-            snapshot.isDraggingOver ? "bg-slate-100" : "bg-white")
+            theme === "light"
+              ? snapshot.isDraggingOver
+                ? "bg-slate-100"
+                : "bg-white"
+              : snapshot.isDraggingOver
+              ? "bg-slate-600"
+              : "bg-gray-700"
           }`}
         >
           <h1
@@ -96,10 +102,7 @@ const Card = ({ data, project, theme, snapshot }) => {
                   </span>
                 </h1>
                 <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    dispatch(removeTask([project, data]));
-                  }}
+                  onClick={() => dispatch(removeTask([project, data]))}
                   className="bg-red-500 p-2 rounded-lg text-white mt-5"
                 >
                   Delete
