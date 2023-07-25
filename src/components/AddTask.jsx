@@ -29,7 +29,7 @@ const AddTask = ({ project }) => {
     ) {
       setError(true);
     } else {
-      dispatch(addTask([project, formdata]));
+      dispatch(addTask([project, formdata, formdata.status]));
       setError(false);
       e.target.title.value = "";
       e.target.description.value = "";

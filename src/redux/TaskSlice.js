@@ -6,7 +6,7 @@ const taskSlice = createSlice({
   initialState: {},
   reducers: {
     addProject: (state, action) => {
-      state[action.payload] = [];
+      state[action.payload] = { todo: [], doing: [], done: [] };
       let copyState = { ...state };
       saveState(copyState);
     },
@@ -24,28 +24,67 @@ const taskSlice = createSlice({
       saveState(copyState);
     },
     addTask: (state, action) => {
-      state[action.payload[0]] = [
-        action.payload[1],
-        ...state[action.payload[0]],
-      ];
+      let p_name = action.payload[0];
+      let data = action.payload[1];
+      let status = action.payload[2];
+      let obj = {
+        ...state[p_name],
+        [status]: [...state[p_name][status], data],
+      };
+      state[action.payload[0]] = obj;
+
       let copyState = { ...state };
       saveState(copyState);
     },
     removeTask: (state, action) => {
-      state[action.payload[0]] = state[action.payload[0]].filter(
-        (data) => data.id !== action.payload[1].id,
+      let project = action.payload[0];
+      let data = action.payload[1];
+      let status = data.status;
+
+      let id = data.id;
+      state[project][status] = state[project][status].filter(
+        (item) => item.id !== id,
       );
+
       let copyState = { ...state };
       saveState(copyState);
     },
     updateTask: (state, action) => {
-      state[action.payload[0]] = state[action.payload[0]].filter(
-        (data) => data.id !== action.payload[1].id,
+      let project = action.payload[0];
+      let data = action.payload[1];
+      let status = action.payload[2];
+      let id = data.id;
+
+      state[project][status] = state[project][status].filter(
+        (item) => item.id !== id,
       );
-      state[action.payload[0]] = [
-        action.payload[1],
-        ...state[action.payload[0]],
-      ];
+
+      let obj = {
+        ...state[project],
+        [data.status]: [...state[project][data.status], data],
+      };
+
+      state[action.payload[0]] = obj;
+
+      let copyState = { ...state };
+      saveState(copyState);
+    },
+
+    updateIndex: (state, action) => {
+      let project = action.payload[0];
+      let data = action.payload[1];
+      state[project] = data;
+      let copyState = { ...state };
+      saveState(copyState);
+    },
+    updateChangeIndex: (state, action) => {
+      let project = action.payload[0];
+      let prev_status = action.payload[1];
+      let new_status = action.payload[2];
+      let prev_data = action.payload[3];
+      let new_data = action.payload[4];
+      state[project][prev_status] = prev_data;
+      state[project][new_status] = new_data;
       let copyState = { ...state };
       saveState(copyState);
     },
@@ -59,6 +98,8 @@ export const {
   addTask,
   removeTask,
   updateTask,
+  updateIndex,
+  updateChangeIndex,
 } = taskSlice.actions;
 
 export default taskSlice.reducer;

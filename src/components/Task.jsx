@@ -2,48 +2,17 @@ import Card from "./Card";
 import { DragDropContext, Draggable } from "react-beautiful-dnd";
 import { StrictModeDroppable as Droppable } from "./helpers/StrictModeDroppable";
 import { useState, useEffect } from "react";
-import { v4 as uuidv4 } from "uuid";
 import { useDispatch } from "react-redux";
-import { updateTask } from "../redux/TaskSlice";
+import { updateChangeIndex, updateIndex } from "../redux/TaskSlice";
 
 /* eslint-disable react/prop-types */
 const Task = ({ task, project, theme }) => {
   const dispatch = useDispatch();
-  let todo = task.filter((t) => t.status === "todo");
-  let doing = task.filter((t) => t.status === "doing");
-  let done = task.filter((t) => t.status === "done");
-
-  let todo_id = uuidv4();
-  let doing_id = uuidv4();
-  let done_id = uuidv4();
-  let columnsfromBackend = {
-    [todo_id]: {
-      name: "todo",
-      items: todo,
-    },
-    [doing_id]: {
-      name: "doing",
-      items: doing,
-    },
-    [done_id]: {
-      name: "done",
-      items: done,
-    },
-  };
-
-  const [columns, setColumns] = useState(columnsfromBackend);
 
   useEffect(() => {
-    setColumns(columnsfromBackend);
+    setColumns(task);
   }, [task]);
-
-  if (task.length === 0) {
-    return (
-      <div className="text-center pt-40 text-2xl font-bold text-gray-500">
-        No Task
-      </div>
-    );
-  }
+  const [columns, setColumns] = useState(task);
 
   const onDragEnd = (result, columns, setColumns) => {
     if (!result.destination) {
@@ -54,37 +23,39 @@ const Task = ({ task, project, theme }) => {
     if (source.droppableId !== destination.droppableId) {
       const sourceColumn = columns[source.droppableId];
       const destColumn = columns[destination.droppableId];
-      const sourceItems = [...sourceColumn.items];
-      const destItems = [...destColumn.items];
+      const sourceItems = [...sourceColumn];
+      const destItems = [...destColumn];
       const [removed] = sourceItems.splice(source.index, 1);
-      destItems.splice(destination.index, 0, removed);
-      console.log(destination.index);
-      let obj = { ...destItems[destination.index], status: destColumn.name };
-      dispatch(updateTask([project, obj]));
-      setColumns({
-        ...columns,
-        [source.droppableId]: {
-          ...sourceColumn,
-          items: sourceItems,
-        },
-        [destination.droppableId]: {
-          ...destColumn,
-          items: destItems,
-        },
-      });
-    } else {
-      const column = columns[source.droppableId];
-      const copyItems = [...column.items];
-      const [removeItem] = copyItems.splice(source.index, 1);
-      copyItems.splice(destination.index, 0, removeItem);
+      const newRemoved = { ...removed, status: destination.droppableId };
+      destItems.splice(destination.index, 0, newRemoved);
 
       setColumns({
         ...columns,
-        [source.droppableId]: {
-          ...column,
-          items: copyItems,
-        },
+        [source.droppableId]: [...sourceItems],
+        [destination.droppableId]: [...destItems],
       });
+      dispatch(
+        updateChangeIndex([
+          project,
+          source.droppableId,
+          destination.droppableId,
+          sourceItems,
+          destItems,
+        ]),
+      );
+    } else {
+      const column = columns[source.droppableId];
+      const copyItems = [...column];
+      const [removeItem] = copyItems.splice(source.index, 1);
+      copyItems.splice(destination.index, 0, removeItem);
+
+      let newObj = {
+        ...columns,
+        [source.droppableId]: [...copyItems],
+      };
+
+      setColumns(newObj);
+      dispatch(updateIndex([project, newObj]));
     }
   };
 
@@ -111,9 +82,11 @@ const Task = ({ task, project, theme }) => {
                   {...provided.droppableProps}
                 >
                   <h1 className="text-lg font-bold text-gray-500 ml-3 mb-3 capitalize">
-                    {column.name} 📋 ({column.items.length})
+                    {id}{" "}
+                    {id == "todo" ? " 📋 " : id == "doing" ? " 💪 " : " 🎉 "}(
+                    {column.length})
                   </h1>
-                  {column.items.map((data, index) => (
+                  {column.map((data, index) => (
                     <Draggable
                       key={data.id}
                       draggableId={data.id}

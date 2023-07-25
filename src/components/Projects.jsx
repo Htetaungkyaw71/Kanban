@@ -19,16 +19,21 @@ const Projects = ({ projects, toggleTheme, theme }) => {
   let current_task = data[projects[project]] ?? [];
   let [hide, setHide] = useState(true);
 
+  let names = projects;
   const dispatch = useDispatch();
   const handleSubmit = (e) => {
     e.preventDefault();
     if (name.length <= 0) {
       setError(true);
     } else {
-      dispatch(addProject(name));
-      setName("");
-      setError(false);
-      setAddmodal(false);
+      if (!projects.includes(name)) {
+        dispatch(addProject(name));
+        setName("");
+        setError(false);
+        setAddmodal(false);
+      } else {
+        setError(true);
+      }
     }
   };
 
@@ -63,7 +68,11 @@ const Projects = ({ projects, toggleTheme, theme }) => {
                         project === index && "bg-blue-500 text-white"
                       }  p-4 rounded-r-3xl text-gray-500 `}
                     >
-                      <Project project={i} changeProjectHover={setProject} />
+                      <Project
+                        project={i}
+                        changeProjectHover={setProject}
+                        projects={names}
+                      />
                       <button onClick={() => setProject(index)}>
                         <h1 className="text-lg font-semibold ml-5"> {i}</h1>
                       </button>

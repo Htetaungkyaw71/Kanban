@@ -140,7 +140,9 @@ const Card = ({ data, project, theme, snapshot }) => {
                     ) {
                       setError(true);
                     } else {
-                      dispatch(updateTask([project, updateData]));
+                      dispatch(updateTask([project, updateData, data.status]));
+                      setEdit(false);
+                      setCardToogle(true);
                       setError(false);
                     }
                   }}

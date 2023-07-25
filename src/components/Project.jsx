@@ -8,7 +8,7 @@ import Modal from "./Modal";
 import { RxCross1 } from "react-icons/rx";
 
 /* eslint-disable react/prop-types */
-const Project = ({ project, changeProjectHover }) => {
+const Project = ({ project, changeProjectHover, projects }) => {
   const [toggle, setToggle] = useState(false);
   const [error, setError] = useState(false);
   const [rename, setRename] = useState(project);
@@ -56,9 +56,13 @@ const Project = ({ project, changeProjectHover }) => {
                       if (rename.length <= 0) {
                         setError(true);
                       } else {
-                        dispatch(renameProject([project, rename]));
-                        setToggle(false);
-                        setError(false);
+                        if (!projects.includes(rename)) {
+                          dispatch(renameProject([project, rename]));
+                          setToggle(false);
+                          setError(false);
+                        } else {
+                          setError(true);
+                        }
                       }
                     }}
                     className="mt-2"

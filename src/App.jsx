@@ -1,7 +1,6 @@
 import { useSelector } from "react-redux";
 import Projects from "./components/Projects";
 import { useState, useEffect } from "react";
-useState;
 
 function App() {
   let data = useSelector((state) => state.TaskSlice);
@@ -17,6 +16,7 @@ function App() {
   useEffect(() => {
     document.body.className = theme;
   }, [theme]);
+
   return (
     <div className="container mx-auto mt-3">
       <Projects projects={keys} toggleTheme={toggleTheme} theme={theme} />
